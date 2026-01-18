@@ -7,10 +7,9 @@ const db = new sqlite3.Database("agency.db");
 
 app.use(express.json());
 
-// This line tells the server EXACTLY where the public folder is on the internet
-app.use(express.static(path.join(__dirname, "public")));
+// FIXED: Changed "public" to "Public" to match your GitHub folder name
+app.use(express.static(path.join(__dirname, "Public")));
 
-// Database setup
 db.run(`
 CREATE TABLE IF NOT EXISTS leads (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -23,7 +22,6 @@ CREATE TABLE IF NOT EXISTS leads (
 )
 `);
 
-// Route to handle requests
 app.post("/hire-me", (req, res) => {
     const { name, email, service, budget, message } = req.body;
     db.run(
@@ -36,16 +34,15 @@ app.post("/hire-me", (req, res) => {
     );
 });
 
-// Route to get data for your dashboard
 app.get("/api/leads", (req, res) => {
     db.all("SELECT * FROM leads ORDER BY date DESC", (err, rows) => {
         res.json(rows);
     });
 });
 
-// THIS IS THE FIX: Explicitly tell the server to serve index.html when people visit the main link
+// FIXED: Changed "public" to "Public" here as well
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "index.html"));
+    res.sendFile(path.join(__dirname, "Public", "index.html"));
 });
 
 const PORT = process.env.PORT || 3000;
