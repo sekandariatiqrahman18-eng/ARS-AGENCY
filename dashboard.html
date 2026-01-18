@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agency Dashboard</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f0f0; padding: 50px; }
+        .card { background: white; padding: 30px; border-radius: 10px; margin-bottom: 20px; border-left: 8px solid #0070f3; }
+        .budget { color: green; font-weight: bold; }
+        h1 { margin-bottom: 40px; }
+    </style>
+</head>
+<body>
+    <h1>Potential Clients</h1>
+    <div id="leads"></div>
+
+    <script>
+        fetch("/api/leads")
+            .then(res => res.json())
+            .then(data => {
+                const div = document.getElementById("leads");
+                if (data.length === 0) div.innerHTML = "<p>No inquiries yet. Go get some clients!</p>";
+                data.forEach(lead => {
+                    div.innerHTML += `
+                        <div class="card">
+                            <h3>${lead.name} - ${lead.service}</h3>
+                            <p><strong>Email:</strong> ${lead.email}</p>
+                            <p><strong>Budget:</strong> <span class="budget">${lead.budget}</span></p>
+                            <p><strong>Message:</strong> ${lead.message}</p>
+                            <small>Received: ${new Date(lead.date).toLocaleString()}</small>
+                        </div>
+                    `;
+                });
+            });
+    </script>
+</body>
+</html>

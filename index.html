@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rahman Web Agency | Custom Business Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --blue: #0070f3; --dark: #000000; --grey: #111; }
+        body { font-family: 'Inter', sans-serif; margin: 0; background: var(--dark); color: white; scroll-behavior: smooth; }
+        
+        /* Navigation */
+        nav { padding: 25px 5%; display: flex; justify-content: space-between; border-bottom: 1px solid #222; position: sticky; top: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 1000; }
+        .logo { font-weight: bold; font-size: 1.4rem; letter-spacing: -1px; }
+        .nav-links a { color: #888; text-decoration: none; margin-left: 20px; font-size: 0.9rem; transition: 0.3s; }
+        .nav-links a:hover { color: white; }
+
+        /* Hero */
+        .hero { height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 10%; }
+        .hero h1 { font-size: 5rem; margin: 0; background: linear-gradient(to bottom, #fff 0%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { color: #888; font-size: 1.2rem; max-width: 600px; line-height: 1.6; margin: 30px 0; }
+        .btn { background: white; color: black; padding: 18px 35px; border-radius: 8px; text-decoration: none; font-weight: bold; transition: 0.3s; }
+        .btn:hover { background: var(--blue); color: white; }
+
+        /* Services Grid */
+        .container { padding: 100px 5%; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .card { background: var(--grey); padding: 40px; border-radius: 15px; border: 1px solid #222; transition: 0.3s; }
+        .card:hover { border-color: var(--blue); }
+        .card h3 { font-size: 1.5rem; margin-top: 0; }
+        .card p { color: #777; line-height: 1.6; }
+
+        /* Form Section */
+        .contact-section { background: #080808; padding: 100px 5%; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+        @media (max-width: 800px) { .contact-section { grid-template-columns: 1fr; } }
+        
+        input, select, textarea { width: 100%; padding: 15px; margin: 10px 0; background: #111; border: 1px solid #222; color: white; border-radius: 8px; font-size: 1rem; }
+        .submit-btn { background: var(--blue); color: white; border: none; padding: 20px; width: 100%; font-weight: bold; border-radius: 8px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">ARS AGENCY</div>
+    <div class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#contact">Get a Quote</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <h1>Your Business.<br>High Definition.</h1>
+    <p>We build elite digital platforms for businesses that want to dominate their local market. From restaurant systems to booking engines.</p>
+    <a href="#contact" class="btn">START A PROJECT</a>
+</section>
+
+<div class="container" id="services">
+    <div class="grid">
+        <div class="card">
+            <h3>Full-Stack Apps</h3>
+            <p>Complete systems with databases, ordering, and customer management. Built for speed and security.</p>
+        </div>
+        <div class="card">
+            <h3>Restaurant Tech</h3>
+            <p>Digital menus and live order tracking. Stop paying 30% to delivery apps and own your data.</p>
+        </div>
+        <div class="card">
+            <h3>Brand Identity</h3>
+            <p>Websites that don't just look good—they sell. We focus on conversion and user experience.</p>
+        </div>
+    </div>
+</div>
+
+<section class="contact-section" id="contact">
+    <div>
+        <h2 style="font-size: 3rem; margin: 0;">Ready to scale?</h2>
+        <p style="color: #666; font-size: 1.2rem;">Tell us about your project and we'll send you a custom proposal within 24 hours.</p>
+    </div>
+    <form id="hireForm">
+        <input type="text" id="name" placeholder="Full Name" required>
+        <input type="email" id="email" placeholder="Email Address" required>
+        <select id="service">
+            <option value="E-Commerce">E-Commerce Store</option>
+            <option value="Restaurant">Restaurant System</option>
+            <option value="Landing Page">Professional Landing Page</option>
+        </select>
+        <select id="budget">
+            <option value="$500-$1000">$500 - $1,000</option>
+            <option value="$1000-$3000">$1,000 - $3,000</option>
+            <option value="$5000+">$5,000+</option>
+        </select>
+        <textarea id="message" rows="4" placeholder="Briefly describe your business goals..."></textarea>
+        <button type="submit" class="submit-btn">SEND REQUEST</button>
+    </form>
+</section>
+
+<script>
+    document.getElementById("hireForm").onsubmit = async (e) => {
+        e.preventDefault();
+        const response = await fetch("/hire-me", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value,
+                service: document.getElementById("service").value,
+                budget: document.getElementById("budget").value,
+                message: document.getElementById("message").value
+            })
+        });
+
+        if (response.ok) {
+            alert("Application Sent! 🚀 I'll be in touch shortly to discuss your project.");
+            e.target.reset();
+        }
+    };
+</script>
+
+</body>
+</html>
