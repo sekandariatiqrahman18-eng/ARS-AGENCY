@@ -6,9 +6,11 @@ const app = express();
 const db = new sqlite3.Database("agency.db");
 
 app.use(express.json());
-app.use(express.static("public"));
 
-// Create the table to store people who want to hire you
+// This line tells the server EXACTLY where the public folder is on the internet
+app.use(express.static(path.join(__dirname, "public")));
+
+// Database setup
 db.run(`
 CREATE TABLE IF NOT EXISTS leads (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -21,7 +23,7 @@ CREATE TABLE IF NOT EXISTS leads (
 )
 `);
 
-// 1. Receive data from the website
+// Route to handle requests
 app.post("/hire-me", (req, res) => {
     const { name, email, service, budget, message } = req.body;
     db.run(
@@ -34,14 +36,19 @@ app.post("/hire-me", (req, res) => {
     );
 });
 
-// 2. Send the data to your private dashboard
+// Route to get data for your dashboard
 app.get("/api/leads", (req, res) => {
     db.all("SELECT * FROM leads ORDER BY date DESC", (err, rows) => {
         res.json(rows);
     });
 });
 
+// THIS IS THE FIX: Explicitly tell the server to serve index.html when people visit the main link
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`🚀 Agency is running at port ${PORT}`);
+    console.log(`🚀 Agency is running on port ${PORT}`);
 });
