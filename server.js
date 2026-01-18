@@ -7,8 +7,8 @@ const db = new sqlite3.Database("agency.db");
 
 app.use(express.json());
 
-// FIXED: Changed "public" to "Public" to match your GitHub folder name
-app.use(express.static(path.join(__dirname, "Public")));
+// This tells the server the files are in the main folder (not inside "Public")
+app.use(express.static(__dirname));
 
 db.run(`
 CREATE TABLE IF NOT EXISTS leads (
@@ -40,12 +40,12 @@ app.get("/api/leads", (req, res) => {
     });
 });
 
-// FIXED: Changed "public" to "Public" here as well
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "Public", "index.html"));
+// Homepage route
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`🚀 Agency is running on port ${PORT}`);
+    console.log(`🚀 Server is running on port ${PORT}`);
 });
